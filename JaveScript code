@@ -1,0 +1,60 @@
+//this code does not work yet... work in progress
+
+function pathFinder(maze) {
+  let arr = maze.split('\n')
+//  console.log(arr)
+  let numRows = arr.length;
+//  console.log(numRows)
+  let numCols = arr[0].length;
+//  console.log(numCols)
+  let visited = new Set();
+  let queue = [[0, 0]]; // Start at upper left corner
+
+  while (queue.length > 0) {
+//    console.log(queue)
+    let row = queue[0][0];
+//    console.log(row)
+    let col = queue[0][1];
+//    console.log(col)
+    queue.shift();
+//    console.log(queue)
+    
+    if (row == numRows - 1 && col == numCols - 1) {
+      return true; // Reached the bottom right corner
+    }
+    let neighbors = getNeighbors(maze, row, col);
+    for (let [r, c] of neighbors) {
+      let key = `${r},${c}`;
+      if (!visited.has(key)) {
+        visited.add(key);
+        queue.push([r, c]);
+      } 
+    }
+  }
+  return false; // Could not reach the bottom right corner
+}
+
+function getNeighbors(maze, row, col) {  
+//  console.log(maze, row, column)
+  let arr = maze.split('\n')
+  console.log(arr)
+  let numRows = arr.length;
+  console.log(numRows)
+  let numCols = arr[0].length;
+  console.log(numCols)
+  let directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down, left
+  let neighbors = [];
+  for (let [directionRow, directionColumn] of directions) {
+    let r = row + directionRow;
+    let c = col + directionColumn;
+//    console.log(r < 0 || r >= numRows || c < 0 || c >= numCols)
+    if (r < 0 || r >= numRows || c < 0 || c >= numCols) {
+      continue; // Out of bounds
+    }
+//    console.log(maze[r][c]==".")
+    if (maze[r][c] == ".") {
+      neighbors.push([r, c]); // Add open space as neighbor
+    }
+  }
+  return neighbors;
+}
